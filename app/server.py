@@ -63,13 +63,11 @@ def edit_student(index):
     student = students[index]
 
     if request.method == 'POST':
-        # Получаем данные из формы
         name = request.form['name']
         surname = request.form['surname']
         avg_grade_str = request.form['avg_grade']
         subjects_str = request.form['subjects']
 
-        # Валидируем
         error = None
         if not name or not name[0].isupper() or not name.isalpha():
             error = 'Имя должно начинаться с заглавной буквы и содержать только буквы.'

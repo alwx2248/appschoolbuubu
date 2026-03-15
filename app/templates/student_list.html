@@ -11,7 +11,7 @@
             <th>Фамилия</th>
             <th>Средний балл</th>
             <th>Предметов</th>
-            <th>Действия</th> <!-- кнопка удаления -->
+            <th>Действия</th>
         </tr>
         {% for student in students %}
         <tr>
@@ -21,6 +21,10 @@
             <td>{{ student.avg_grade }}</td>
             <td>{{ student.subjects }}</td>
             <td>
+                <form method="GET" action="{{ url_for('edit_student', index=loop.index0) }}" style="display:inline;">
+                    <button type="submit">редакт</button>
+                </form>
+                
                 <form method="post" action="/delete/{{ loop.index0 }}" style="display:inline;">
                     <button type="submit" onclick="return confirm('Точно удалить?');">Удалить</button>
                 </form>

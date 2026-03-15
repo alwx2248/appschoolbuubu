@@ -21,13 +21,11 @@ def add_student():
         avg_grade_str = request.form.get('avg_grade', '')
         subjects_str = request.form.get('subjects', '')
 
-        
-        if not name[0].isupper() or not name.isalpha():
+        if not name or not name[0].isupper() or not name.isalpha():
             error = 'Имя должно начинаться с заглавной буквы и содержать только буквы.'
-        elif not surname[0].isupper() or not surname.isalpha():
+        elif not surname or not surname[0].isupper() or not surname.isalpha():
             error = 'Фамилия должна начинаться с заглавной буквы и содержать только буквы.'
         else:
-            
             try:
                 avg_grade = float(avg_grade_str)
                 subjects = int(subjects_str)
@@ -35,7 +33,6 @@ def add_student():
                 error = 'Проверьте правильность введенных чисел и среднего балла.'
 
         if error:
-            
             return render_template('add_student.html', error=error, name=name, surname=surname, avg_grade=avg_grade_str, subjects=subjects_str)
         else:
             students.append({
@@ -46,7 +43,6 @@ def add_student():
             })
             return redirect(url_for('show_students'))
 
-    
     return render_template('add_student.html', error=error, name=name, surname=surname, avg_grade=avg_grade, subjects=subjects)
 
 @app.route('/students')
@@ -59,6 +55,47 @@ def delete_student(index):
         students.pop(index)
     return redirect(url_for('show_students'))
 
+@app.route('/edit/<int:index>', methods=['GET', 'POST'])
+def edit_student(index):
+    if index < 0 or index >= len(students):
+        return redirect(url_for('show_students'))
+
+    student = students[index]
+
+    if request.method == 'POST':
+        # Получаем данные из формы
+        name = request.form['name']
+        surname = request.form['surname']
+        avg_grade_str = request.form['avg_grade']
+        subjects_str = request.form['subjects']
+
+        # Валидируем
+        error = None
+        if not name or not name[0].isupper() or not name.isalpha():
+            error = 'Имя должно начинаться с заглавной буквы и содержать только буквы.'
+        elif not surname or not surname[0].isupper() or not surname.isalpha():
+            error = 'Фамилия должна начинаться с заглавной буквы и содержать только буквы.'
+        else:
+            try:
+                avg_grade = float(avg_grade_str)
+                subjects = int(subjects_str)
+            except ValueError:
+                error = 'Проверьте правильность введенных чисел.'
+
+        if error:
+            return render_template('edit_student.html', student=request.form, error=error, index=index)
+        else:
+            
+            students[index] = {
+                'name': name,
+                'surname': surname,
+                'avg_grade': avg_grade,
+                'subjects': subjects
+            }
+            return redirect(url_for('show_students'))
+
+    
+    return render_template('edit_student.html', student=student, index=index)
 if __name__ == '__main__':
-    print("🚀 Сервер запущен! Открой http://127.0.0.1:5000")
+    print("🚀 Сервер запущен! Откройте http://127.0.0.1:5000")
     app.run(debug=True)

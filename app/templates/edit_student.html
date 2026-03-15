@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Редактировать ученика</h2>
+<form method="POST">
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+    <p>
+        <label>имя:</label><br>
+        <input type="text" name="name" value="{{ student.name if student else '' }}" required>
+    </p>
+    <p>
+        <label>фамилия:</label><br>
+        <input type="text" name="surname" value="{{ student.surname if student else '' }}" required>
+    </p>
+    <p>
+        <label>ср бал:</label><br>
+        <input type="number" name="avg_grade" step="0.1" min="1" max="5" value="{{ student.avg_grade if student else '' }}" required>
+    </p>
+    <p>
+        <label>предметов:</label><br>
+        <input type="number" name="subjects" min="1" value="{{ student.subjects if student else '' }}" required>
+    </p>
+    <button type="submit">Сохранить</button>
+</form>
+<p><a href="{{ url_for('show_students') }}">К списку учеников</a></p>
+{% endblock %}

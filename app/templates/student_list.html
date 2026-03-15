@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>📋 Список учеников</h2>
+
+{% if students %}
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>№</th>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Средний балл</th>
+            <th>Предметов</th>
+            <th>Действия</th> <!-- кнопка удаления -->
+        </tr>
+        {% for student in students %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ student.name }}</td>
+            <td>{{ student.surname }}</td>
+            <td>{{ student.avg_grade }}</td>
+            <td>{{ student.subjects }}</td>
+            <td>
+                <form method="post" action="/delete/{{ loop.index0 }}" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Точно удалить?');">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p>Всего учеников: {{ students|length }}</p>
+{% else %}
+    <p>Пока нет учеников. <a href="/add">Добавить первого!</a></p>
+{% endif %}
+<p><a href="/">← На главную</a></p>
+{% endblock %}

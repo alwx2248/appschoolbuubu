@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Добавить ученика</h2>
+<form method = "POST">
+    <p>
+        <label>имя:</label><br>
+        <input type="text" name="name" required>
+    </p>
+    <p>
+        <label>фамилия:</label><br>
+        <input type="text" name="surname" required>
+    </p>
+    <p>
+        <label>ср бал:</label><br>
+        <input type="number" name="avg_grade" step="0.1" min='1' max='5' required>
+    </p>
+    <p>
+        <label>кол во предметов:</label><br>
+        <input type="number" name="subjects"  min='1' max='15' required>
+    </p>
+    <button type="submit">добавить уч</button>
+
+</form>
+<p><a href="/">на главную</a></p>
+{% endblock %}
+<script>console.log()</script>
